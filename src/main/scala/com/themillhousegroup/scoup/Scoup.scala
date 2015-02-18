@@ -26,7 +26,7 @@ object Scoup extends DefaultWait {
       .post
   }
 
-  def parseHTML(html:String):Document = {
+  def parseHTML(html: String): Document = {
     Jsoup.parse(html)
   }
 }

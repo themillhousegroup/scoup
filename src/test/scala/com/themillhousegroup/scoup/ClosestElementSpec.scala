@@ -10,7 +10,7 @@ class ClosestElementSpec extends Specification with ScoupImplicits with HtmlFixt
 
   "Closest" should {
     "Be able to find self" in {
-      val item = doc.select("li#l2i2")
+      val item = doc.select("li#l2i2").head
       item must not beNull
 
       item.closest("li") must beSome[Element]
