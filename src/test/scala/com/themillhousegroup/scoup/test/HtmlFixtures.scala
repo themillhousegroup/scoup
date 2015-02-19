@@ -4,6 +4,7 @@ trait HtmlFixtures {
 
   val nestedList =
     """
+      <div id="wrapper">
       <h3 id="firstHeading">First Heading</h3>
       <ul id="firstList">
         <li id="l1i1">One</li>
@@ -22,5 +23,6 @@ trait HtmlFixtures {
           <li id="l3i2">Two</li>
           <li id="l3i3">Three</li>
         </ul>
+      </div>
     """.stripMargin
 }
