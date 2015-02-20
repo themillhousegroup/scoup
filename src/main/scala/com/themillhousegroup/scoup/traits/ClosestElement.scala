@@ -24,15 +24,9 @@ object ClosestFinder extends ScoupImplicits {
 
   /** Returns an Elements - i.e. it doesn't just grab the first */
   def findClosest(selector: String, elems: Elements): Elements = {
-    if (elems.isEmpty) {
-      elems
-    } else {
+    elems.headOption.fold(elems) { _ =>
       val here = elems.select(selector)
-      if (here.nonEmpty) {
-        here
-      } else {
-        findClosest(selector, elems.parents)
-      }
+      here.headOption.fold(findClosest(selector, elems.parents))(_ => here)
     }
   }
 
