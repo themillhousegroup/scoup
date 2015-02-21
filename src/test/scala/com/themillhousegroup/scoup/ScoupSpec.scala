@@ -20,7 +20,7 @@ class ScoupSpec extends Specification with Mockito {
     val testScoup = new Scoup(mockJsoup)
 
     def waitFor(f: => Future[Document]) = {
-      Await.result(f, Waits.fifteenSecondDuration)
+      Await.result(f, Waits.FifteenSeconds.duration)
     }
   }
 
@@ -44,13 +44,13 @@ class ScoupSpec extends Specification with Mockito {
     "Connect with a reasonable timeout by default" in new MockScoupScope {
       waitFor(testScoup.parse("foo"))
 
-      there was one(mockConnection).timeout(Waits.fifteenSecondsInMillis)
+      there was one(mockConnection).timeout(Waits.FifteenSeconds.inMillis)
     }
 
     "Accept an overridden User Agent" in new MockScoupScope {
-      waitFor(testScoup.parse("foo", ScoupOptions(timeout = Waits.sixtySecondDuration)))
+      waitFor(testScoup.parse("foo", ScoupOptions(timeout = Waits.SixtySeconds.duration)))
 
-      there was one(mockConnection).timeout(Waits.sixtySecondsInMillis)
+      there was one(mockConnection).timeout(Waits.SixtySeconds.inMillis)
     }
   }
 
