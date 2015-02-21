@@ -38,6 +38,8 @@ trait ClosestElement {
    * Description: For each element in the set, get the first element that matches the selector
    * by testing the element itself and traversing up through its ancestors in the DOM tree.
    *
+   * @return a Some containing the first one found, or None
+   *
    * @see http://api.jquery.com/closest/
    */
   def closestOption(selector: String): Option[Element] = {
@@ -47,6 +49,8 @@ trait ClosestElement {
   /**
    * Description: For each element in the set, get the first elements that match the selector
    * by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
+   * @return an Elements (which may be empty)
    *
    * @see http://api.jquery.com/closest/
    */
