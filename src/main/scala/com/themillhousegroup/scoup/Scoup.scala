@@ -2,27 +2,26 @@ package com.themillhousegroup.scoup
 
 import org.jsoup.{ Connection, Jsoup }
 import org.jsoup.nodes.Document
-import com.themillhousegroup.scoup.traits.UserAgent
 import scala.collection.JavaConverters._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
+import com.themillhousegroup.scoup.options.ScoupOptions
 
 object Scoup extends Scoup(new RealJsoup()) {}
 
 class Scoup(impl: JSoupProvider) {
-  private def basicJsoup(url: String, ua: UserAgent, timeout: Duration): Connection =
+  private def basicJsoup(url: String, options: ScoupOptions): Connection =
     impl
       .connect(url)
-      .userAgent(ua.uaString)
-      .timeout(timeout.toMillis.toInt)
+      .userAgent(options.userAgent)
+      .timeout(options.timeout.toMillis.toInt)
 
-  def parse(url: String)(implicit timeout: Duration, ua: UserAgent): Future[Document] = Future {
-    basicJsoup(url, ua, timeout).get
+  def parse(url: String, options: ScoupOptions = ScoupOptions()): Future[Document] = Future {
+    basicJsoup(url, options).get
   }
 
-  def parsePost(url: String, data: Map[String, String])(implicit timeout: Duration, ua: UserAgent): Future[Document] = Future {
-    basicJsoup(url, ua, timeout)
+  def parsePost(url: String, data: Map[String, String], options: ScoupOptions = ScoupOptions()): Future[Document] = Future {
+    basicJsoup(url, options)
       .data(data.asJava)
       .post
   }

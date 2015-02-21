@@ -1,5 +1,6 @@
 package com.themillhousegroup.scoup.options
 
-class ScoupOptions {
+import scala.concurrent.duration.Duration
 
-}
+case class ScoupOptions(userAgent: String = UserAgents.macChromeUserAgentString,
+  timeout: Duration = Waits.fifteenSecondDuration)

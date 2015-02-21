@@ -3,9 +3,9 @@ package com.themillhousegroup.scoup
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Element
 import scala.collection.JavaConverters._
-import com.themillhousegroup.scoup.traits.{ DefaultWait, DefaultUserAgent, ClosestElement }
+import com.themillhousegroup.scoup.traits.ClosestElement
 
-trait ScoupImplicits extends DefaultUserAgent with DefaultWait {
+trait ScoupImplicits {
   implicit def enrichElements(xs: Elements) = new RichElements(xs)
   implicit def enrichElement(el: Element) = new RichElement(el)
 }
