@@ -3,7 +3,7 @@ package com.themillhousegroup.scoup
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Element
 import scala.collection.JavaConverters._
-import com.themillhousegroup.scoup.traits.ClosestElement
+import com.themillhousegroup.scoup.traits.{ClosestElements, ElementsAttributeOption, AttributeOption, ClosestElement}
 
 trait ScoupImplicits {
   implicit def enrichElements(xs: Elements) = new RichElements(xs)
@@ -17,13 +17,19 @@ trait ScoupImplicits {
  * TODO: Filtering by regex on ownText
  * @param target
  */
-class RichElements(val target: Elements) extends Iterable[Element] {
+class RichElements(val target: Elements)
+  extends Iterable[Element]
+  with ClosestElements
+  with ElementsAttributeOption {
 
   def iterator: Iterator[Element] = {
     target.asScala.iterator
   }
 }
 
-class RichElement(val target: Element) extends ClosestElement {
+
+class RichElement(val target: Element)
+  extends ClosestElement
+  with AttributeOption {
 
 }

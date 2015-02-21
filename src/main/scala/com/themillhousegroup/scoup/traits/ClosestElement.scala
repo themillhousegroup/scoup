@@ -59,3 +59,32 @@ trait ClosestElement {
   }
 
 }
+
+trait ClosestElements {
+  val target: Elements
+
+  /**
+   * Description: For each element in the set, get the first element that matches the selector
+   * by testing the elements themselves and traversing up through their ancestors in the DOM tree.
+   *
+   * @return a Some containing the first one found, or None
+   *
+   * @see http://api.jquery.com/closest/
+   */
+  def closestOption(selector: String): Option[Element] = {
+    ClosestFinder.findClosestOption(selector, target)
+  }
+
+  /**
+   * Description: For each element in the set, get the first elements that match the selector
+   * by testing the elements themselves and traversing up through their ancestors in the DOM tree.
+   *
+   * @return an Elements (which may be empty)
+   *
+   * @see http://api.jquery.com/closest/
+   */
+  def closest(selector: String): Elements = {
+    ClosestFinder.findClosest(selector, target)
+  }
+
+}
