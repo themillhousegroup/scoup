@@ -7,20 +7,20 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import com.themillhousegroup.scoup.options.ScoupOptions
 
-object Scoup extends Scoup(new RealJsoup()) {}
+object Scoup extends Scoup(new RealJsoup(), ScoupOptions()) {}
 
-class Scoup(impl: JSoupProvider) {
+class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = ScoupOptions()) {
   private def basicJsoup(url: String, options: ScoupOptions): Connection =
     impl
       .connect(url)
       .userAgent(options.userAgent)
       .timeout(options.timeout.toMillis.toInt)
 
-  def parse(url: String, options: ScoupOptions = ScoupOptions()): Future[Document] = Future {
+  def parse(url: String, options: ScoupOptions = scoupOptions): Future[Document] = Future {
     basicJsoup(url, options).get
   }
 
-  def parsePost(url: String, data: Map[String, String], options: ScoupOptions = ScoupOptions()): Future[Document] = Future {
+  def parsePost(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions): Future[Document] = Future {
     basicJsoup(url, options)
       .data(data.asJava)
       .post
