@@ -17,6 +17,7 @@ class ScoupSpec extends Specification with Mockito {
     mockConnection.userAgent(anyString) returns mockConnection
     mockConnection.timeout(anyInt) returns mockConnection
     mockConnection.method(any[Connection.Method]) returns mockConnection
+    mockConnection.cookies(any[java.util.Map[String, String]]) returns mockConnection
     mockConnection.execute returns mockResponse
     mockConnection.data(any[java.util.Map[String, String]]) returns mockConnection
     val mockJsoup = mock[JSoupProvider]

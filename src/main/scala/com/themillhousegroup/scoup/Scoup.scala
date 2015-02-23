@@ -25,11 +25,13 @@ class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = 
     response
   }
 
-  private def basicJsoup(url: String, options: ScoupOptions): Connection =
+  private def basicJsoup(url: String, options: ScoupOptions): Connection = {
     impl
       .connect(url)
       .userAgent(options.userAgent)
       .timeout(options.timeout.toMillis.toInt)
+      .cookies(retainedCookies.asJava)
+  }
 
   def parse(url: String, options: ScoupOptions = scoupOptions): Future[Document] = {
     Future {
