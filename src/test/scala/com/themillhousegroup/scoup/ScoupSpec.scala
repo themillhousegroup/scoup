@@ -7,13 +7,17 @@ import org.specs2.specification.Scope
 import scala.concurrent.{ Await, Future }
 import org.jsoup.nodes.Document
 import com.themillhousegroup.scoup.options.{ ScoupOptions, Waits, UserAgents }
+import org.jsoup.Connection.Response
 
 class ScoupSpec extends Specification with Mockito {
 
   class MockScoupScope extends Scope {
+    val mockResponse = mock[Response]
     val mockConnection = mock[Connection]
     mockConnection.userAgent(anyString) returns mockConnection
     mockConnection.timeout(anyInt) returns mockConnection
+    mockConnection.method(any[Connection.Method]) returns mockConnection
+    mockConnection.execute returns mockResponse
     mockConnection.data(any[java.util.Map[String, String]]) returns mockConnection
     val mockJsoup = mock[JSoupProvider]
     mockJsoup.connect(anyString) returns mockConnection
@@ -59,13 +63,13 @@ class ScoupSpec extends Specification with Mockito {
     "Allow a GET request to be made" in new MockScoupScope {
       waitFor(testScoup.parse("foo"))
 
-      there was one(mockConnection).get
+      there was one(mockConnection).method(Connection.Method.GET)
     }
 
     "Allow a POST request to be made" in new MockScoupScope {
       waitFor(testScoup.parsePost("foo", Map[String, String]()))
 
-      there was one(mockConnection).post
+      there was one(mockConnection).method(Connection.Method.POST)
     }
 
   }
