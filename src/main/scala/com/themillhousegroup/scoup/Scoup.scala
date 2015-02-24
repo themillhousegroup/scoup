@@ -13,6 +13,7 @@ object Scoup extends Scoup(new RealJsoup(), ScoupOptions()) {}
 
 class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = ScoupOptions()) {
 
+  // TODO: remove this mutability...
   val retainedCookies = mutable.Map[String, String]()
 
   private def extractCookies(opts: ScoupOptions, response: Response) = {

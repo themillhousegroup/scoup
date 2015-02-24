@@ -6,75 +6,53 @@ import org.jsoup.nodes.Element
 
 class AttributeOptionSpec extends Specification with ScoupImplicits with HtmlFixtures {
 
-  val doc = Scoup.parseHTML(nestedList)
+  val doc = Scoup.parseHTML(variousAttributes)
 
-  "closestOption" should {
-    "Be able to find self" in {
-      val item = doc.select("li#l2i2").head
+  "AttributeOption" should {
+    "Be able to defined attributes as a Some" in {
+      val item = doc.select("h1").head
       item must not beNull
 
-      item.closestOption("li") must beSome[Element]
-      item.closestOption("li").get must beEqualTo(item)
+      item.attribute("id") must beSome[String]
+      item.attribute("id").get must beEqualTo("top")
     }
 
-    "Be able to find a direct parent" in {
-      val item = doc.select("li#l2i2").head
+    "Consider a missing attribute as a None" in {
+      val item = doc.select("h2#middle").head
       item must not beNull
 
-      item.closestOption("ul") must beSome[Element]
-      item.closestOption("ul").get must beEqualTo(item.parents.head)
+      item.attribute("class") must beNone
     }
 
-    "Return a None if no match found" in {
-      val item = doc.select("li#l2i2").head
+    "Consider an empty attribute as a None" in {
+      val item = doc.select("h2#bottom").head
       item must not beNull
 
-      item.closestOption("a") must beNone
-    }
-
-    "Be able to find an ancestor" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
-
-      item.closestOption("div") must beSome[Element]
-      item.closestOption("div").get must beEqualTo(item.parents.head.parents.head)
+      item.attribute("class") must beNone
     }
   }
 
-  "closest" should {
-    "Be able to find self" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+  "ElementsAttributeOption" should {
+    "Be able to find the first defined attribute as a Some" in {
+      val items = doc.select("h2")
+      items must not beNull
 
-      item.closest("li") must haveSize(1)
-
-      item.closest("li").head must beEqualTo(item)
+      items.attribute("id") must beSome[String]
+      items.attribute("id").get must beEqualTo("middle")
     }
 
-    "Be able to find multiple parent matches" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+    "Consider a missing attribute as a None" in {
+      val items = doc.select("h2")
+      items must not beNull
 
-      item.closest("ul") must haveSize(3)
-
-      item.closest("ul").head must beEqualTo(item.parents.head)
+      items.attribute("class") must beNone
     }
 
-    "Return an empty Elements if no match found" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+    "Consider an empty attribute as a None" in {
+      val items = doc.select("h2")
+      items must not beNull
 
-      item.closest("a") must beEmpty
+      items.attribute("class") must beNone
     }
-
-    "Be able to find an ancestor" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
-
-      item.closest("div") must not beEmpty
-
-      item.closest("div").head must beEqualTo(item.parents.head.parents.head)
-    }
-
   }
 }

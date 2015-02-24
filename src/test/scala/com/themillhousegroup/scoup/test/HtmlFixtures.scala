@@ -25,4 +25,11 @@ trait HtmlFixtures {
         </ul>
       </div>
     """.stripMargin
+
+  val variousAttributes =
+    """
+        <h1 id="top" class="foo"/>
+        <h2 id="middle" class=""/>
+        <h2 id="bottom"/>
+      """.stripMargin
 }
