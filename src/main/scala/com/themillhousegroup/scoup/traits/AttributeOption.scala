@@ -7,16 +7,17 @@ import org.jsoup.select.Elements
 trait AttributeOption {
   val target: Element
 
-  def attribute(name: String): Option[String] = target.attr(name) match {
-    case "" => None
-    case s: String => Some(s)
-  }
+  def attribute(name: String): Option[String] = EmptyStringToOption(target.attr(name))
 }
 
 trait ElementsAttributeOption {
   val target: Elements
 
-  def attribute(name: String): Option[String] = target.attr(name) match {
+  def attribute(name: String): Option[String] = EmptyStringToOption(target.attr(name))
+}
+
+object EmptyStringToOption {
+  def apply(ss: String): Option[String] = ss match {
     case "" => None
     case s: String => Some(s)
   }
