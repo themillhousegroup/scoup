@@ -11,9 +11,10 @@ import scala.collection.mutable
 
 object Scoup extends Scoup(new RealJsoup(), ScoupOptions()) {}
 
-/** Instantiate a Scoup of your own if you want to set custom
-  * options to be applied to all of its operations
-  */
+/**
+ * Instantiate a Scoup of your own if you want to set custom
+ * options to be applied to all of its operations
+ */
 class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = ScoupOptions()) {
 
   // TODO: remove this mutability...

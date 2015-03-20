@@ -37,22 +37,22 @@ class AttributeRegexSpec extends Specification with ScoupImplicits with HtmlFixt
       val items = doc.select("h2")
       items must not beNull
 
-      items.attribute("id") must beSome[String]
-      items.attribute("id").get must beEqualTo("middle")
+      items.attributeRegex("id".r) must beSome[String]
+      items.attributeRegex("id".r).get must beEqualTo("middle")
     }
 
     "Consider a missing attribute as a None" in {
       val items = doc.select("h2")
       items must not beNull
 
-      items.attribute("class") must beNone
+      items.attributeRegex("class".r) must beNone
     }
 
     "Consider an empty attribute as a None" in {
       val items = doc.select("h2")
       items must not beNull
 
-      items.attribute("class") must beNone
+      items.attributeRegex("class".r) must beNone
     }
   }
 }
