@@ -3,7 +3,7 @@ package com.themillhousegroup.scoup
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Element
 import scala.collection.JavaConverters._
-import com.themillhousegroup.scoup.traits.{ ClosestElements, ElementsAttributeOption, AttributeOption, ClosestElement }
+import com.themillhousegroup.scoup.traits._
 
 trait ScoupImplicits {
   implicit def enrichElements(xs: Elements) = new RichElements(xs)
@@ -29,6 +29,7 @@ class RichElements(val target: Elements)
 
 class RichElement(val target: Element)
     extends ClosestElement
+    with DocumentPositioning
     with AttributeOption {
 
 }

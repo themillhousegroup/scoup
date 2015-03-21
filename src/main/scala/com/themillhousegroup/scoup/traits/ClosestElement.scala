@@ -30,41 +30,53 @@ object ClosestFinder extends ScoupImplicits {
     }
   }
 
+  def findClosestBeforeOption(selector: String, elems: Elements): Option[Element] = {
+    findClosest(selector, elems).find { el =>
+      //el.after()
+      true
+    }
+  }
+
 }
-trait ClosestElement {
-  val target: Element
+trait ClosestElement extends ElementTarget {
 
   /**
-   * Description: For each element in the set, get the first element that matches the selector
+   * For each element in the set, get the first element that matches the selector
    * by testing the element itself and traversing up through its ancestors in the DOM tree.
    *
    * @return a Some containing the first one found, or None
    *
    * @see http://api.jquery.com/closest/
    */
-  def closestOption(selector: String): Option[Element] = {
+  def closestOption(selector: String): Option[Element] =
     ClosestFinder.findClosestOption(selector, target)
-  }
 
   /**
-   * Description: For each element in the set, get the first elements that match the selector
+   * For each element in the set, get the first elements that match the selector
    * by testing the element itself and traversing up through its ancestors in the DOM tree.
    *
    * @return an Elements (which may be empty)
    *
    * @see http://api.jquery.com/closest/
    */
-  def closest(selector: String): Elements = {
+  def closest(selector: String): Elements =
     ClosestFinder.findClosest(selector, new Elements(target))
-  }
+
+  /**
+   * Finds the first element that matches the selector by testing the element
+   * itself and then its ancestors, but ensuring that the element is located
+   * "before" (i.e. closer to the top of the document) than "this" Element.
+   * @param selector
+   */
+  def closestBeforeOption(selector: String): Option[Element] =
+    ClosestFinder.findClosestBeforeOption(selector, new Elements(target))
 
 }
 
-trait ClosestElements {
-  val target: Elements
+trait ClosestElements extends ElementsTarget {
 
   /**
-   * Description: For each element in the set, get the first element that matches the selector
+   * For each element in the set, get the first element that matches the selector
    * by testing the elements themselves and traversing up through their ancestors in the DOM tree.
    *
    * @return a Some containing the first one found, or None
@@ -76,7 +88,7 @@ trait ClosestElements {
   }
 
   /**
-   * Description: For each element in the set, get the first elements that match the selector
+   * For each element in the set, get the first elements that match the selector
    * by testing the elements themselves and traversing up through their ancestors in the DOM tree.
    *
    * @return an Elements (which may be empty)
