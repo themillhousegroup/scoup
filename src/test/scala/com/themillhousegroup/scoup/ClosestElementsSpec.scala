@@ -8,72 +8,74 @@ class ClosestElementsSpec extends Specification with ScoupImplicits with HtmlFix
 
   val doc = Scoup.parseHTML(nestedList)
 
-  "closestOption" should {
+  "closestOption (on Elements)" should {
     "Be able to find self" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closestOption("li") must beSome[Element]
-      item.closestOption("li").get must beEqualTo(item)
+      items.closestOption("li") must beSome[Element]
+      items.closestOption("li").get must beEqualTo(items.head)
     }
 
     "Be able to find a direct parent" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closestOption("ul") must beSome[Element]
-      item.closestOption("ul").get must beEqualTo(item.parents.head)
+      items.closestOption("ul") must beSome[Element]
+      items.closestOption("ul").get must beEqualTo(items.head.parent)
     }
 
     "Return a None if no match found" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closestOption("a") must beNone
+      items.closestOption("a") must beNone
     }
 
     "Be able to find an ancestor" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closestOption("div") must beSome[Element]
-      item.closestOption("div").get must beEqualTo(item.parents.head.parents.head)
+      items.closestOption("div") must beSome[Element]
+      items.closestOption("div").get must beEqualTo(items.head.parent.parent)
     }
   }
 
-  "closest" should {
+  "closest (on Elements)" should {
     "Be able to find self" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closest("li") must haveSize(1)
+      items.closest("li") must haveSize(1)
 
-      item.closest("li").head must beEqualTo(item)
+      items.closest("li").head must beEqualTo(items.head)
     }
 
     "Be able to find multiple parent matches" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closest("ul") must haveSize(3)
+      val uls = doc.select("ul")
 
-      item.closest("ul").head must beEqualTo(item.parents.head)
+      items.closest("ul") must haveSize(3)
+
+      items.closest("ul").toSet must beEqualTo(uls.toSet)
     }
 
     "Return an empty Elements if no match found" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closest("a") must beEmpty
+      items.closest("a") must beEmpty
     }
 
     "Be able to find an ancestor" in {
-      val item = doc.select("li#l2i2").head
-      item must not beNull
+      val items = doc.select("li#l2i2")
+      items must not beNull
 
-      item.closest("div") must not beEmpty
+      items.closest("div") must not beEmpty
 
-      item.closest("div").head must beEqualTo(item.parents.head.parents.head)
+      items.closest("div").head must beEqualTo(doc.select("#wrapper").head)
     }
 
   }
