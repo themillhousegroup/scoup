@@ -7,8 +7,7 @@ import scala.util.matching.Regex
 import scala.collection.JavaConverters._
 
 /** Allow the attributes of an Element to be treated like a Scala Option */
-trait AttributeOption {
-  val target: Element
+trait AttributeOption extends ElementTarget {
 
   def attribute(name: String): Option[String] = EmptyStringToOption(target.attr(name))
 
@@ -16,8 +15,7 @@ trait AttributeOption {
 
 }
 
-trait ElementsAttributeOption {
-  val target: Elements
+trait ElementsAttributeOption extends ElementsTarget {
 
   def attribute(name: String): Option[String] = EmptyStringToOption(target.attr(name))
 
