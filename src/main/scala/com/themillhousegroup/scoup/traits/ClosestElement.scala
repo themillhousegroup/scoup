@@ -30,10 +30,11 @@ object ClosestFinder extends ScoupImplicits {
     }
   }
 
-  def findClosestBeforeOption(selector: String, elems: Elements): Option[Element] = {
-    findClosest(selector, elems).find { el =>
-      //el.after()
-      true
+  def findClosestBeforeOption(selector: String, elem: Element): Option[Element] = {
+    findClosest(selector, new Elements(elem)).find { el =>
+      val b = el.isBefore(elem)
+      println(s"$el is before $elem: $b")
+      b
     }
   }
 
@@ -69,7 +70,7 @@ trait ClosestElement extends ElementTarget {
    * @param selector
    */
   def closestBeforeOption(selector: String): Option[Element] =
-    ClosestFinder.findClosestBeforeOption(selector, new Elements(target))
+    ClosestFinder.findClosestBeforeOption(selector, target)
 
 }
 

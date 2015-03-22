@@ -32,8 +32,8 @@ trait DocumentPositioning extends ElementTarget {
         } else if (isAChildOf(other, me)) {
           false
         } else {
-          //          println(s"REC Comparing ${parentOf(me)} and ${parentOf(other)}")
-          isBefore(parentOf(me), parentOf(other))
+          println(s"REC Comparing ${parentOf(me)} and ${parentOf(other)}")
+          isBefore(me, parentOf(other))
         }
       }
     }
