@@ -39,4 +39,7 @@ trait DocumentPositioning extends ElementTarget {
   def isBefore(other: DocumentPositioning): Boolean =
     compareCoordinates(Option(other))((a, b) => a < b)
 
+  def isAfter(other: DocumentPositioning): Boolean =
+    compareCoordinates(Option(other))((a, b) => a > b)
+
 }
