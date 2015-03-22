@@ -1,76 +1,42 @@
 package com.themillhousegroup.scoup.traits
 
-import org.jsoup.nodes.Node
+import org.jsoup.nodes.{ Element, Node }
 import scala.annotation.tailrec
 
 trait DocumentPositioning extends ElementTarget {
 
-  def isBefore(other: Node): Boolean =
-    isBefore(Option(target), Option(other))
-
   /**
    * Logic:
-   * - If other is my peer, compare indices (negative means I'm in front)
-   * - If other is my child, then I must be before it
-   * - If I am the child of other, then I must be after it
-   *
-   * - Otherwise, perform "isBefore" on our parents recursively
-   *
-   * Args are Options to make null-safe operation easier to read
+   * - Recurse up my parents, recording the sibling index of each as an integer
+   * - Reverse the order of the integer sequence. These are my "co-ordinates"
+   * These can be used for before/after document position queries
    */
-  @tailrec
-  private def isBefore(me: Option[Node], other: Option[Node]): Boolean = {
+  lazy val documentCoordinates = coordinatesOf(Seq(), Some(target)).reverse
 
-    if (other.isEmpty) {
-      false
+  @tailrec
+  private def coordinatesOf(accum: Seq[Int], maybeElement: Option[Element]): Seq[Int] = {
+    if (maybeElement.isEmpty) {
+      accum
     } else {
-      if (arePeers(me, other)) {
-        (comparePeerIndices(me, other) < 0)
-      } else {
-        if (isAChildOf(me, other)) {
-          true
-        } else if (isAChildOf(other, me)) {
-          false
-        } else {
-          println(s"REC Comparing ${parentOf(me)} and ${parentOf(other)}")
-          isBefore(me, parentOf(other))
-        }
+      val elem = maybeElement.get
+      coordinatesOf(accum :+ elem.siblingIndex, Option(elem.parent))
+    }
+  }
+
+  private def compareCoordinates(maybeOther: Option[DocumentPositioning])(f: (Int, Int) => Boolean): Boolean = {
+    maybeOther.fold(false) { other =>
+      val zip = documentCoordinates.zipAll(other.documentCoordinates, 0, 0)
+
+      val maybeFirstDiff = zip.dropWhile(dc => dc._1 == dc._2).headOption
+
+      // A None here means co-ords are exactly the same
+      maybeFirstDiff.fold(false) { diff =>
+        f(diff._1, diff._2)
       }
     }
   }
 
-  private def isAChildOf(me: Option[Node], other: Option[Node]): Boolean = {
-    val r = for {
-      m <- me
-      o <- other
-      c = (m.childNodes != null) && m.childNodes.contains(o)
-    } yield c
+  def isBefore(other: DocumentPositioning): Boolean =
+    compareCoordinates(Option(other))((a, b) => a < b)
 
-    r.getOrElse(false)
-  }
-
-  private def arePeers(me: Option[Node], other: Option[Node]) = {
-    val r = for {
-      m <- me
-      o <- other
-      p = (m.parent == o.parent)
-    } yield p
-    r.getOrElse(false)
-  }
-
-  private def comparePeerIndices(me: Option[Node], other: Option[Node]): Int = {
-    val r = for {
-      m <- me
-      o <- other
-      i = m.siblingIndex - o.siblingIndex
-    } yield i
-    r.getOrElse(0)
-  }
-
-  /** Find my parent. If I don't have one, return self */
-  private def parentOf(n: Option[Node]): Option[Node] = {
-    n.map { node =>
-      Option(node.parent).getOrElse(node)
-    }
-  }
 }
