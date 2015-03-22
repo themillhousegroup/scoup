@@ -20,6 +20,11 @@ trait ElementsAttributeOption {
   val target: Elements
 
   def attribute(name: String): Option[String] = EmptyStringToOption(target.attr(name))
+
+  def attributeRegex(nameRegex: Regex): Option[String] = {
+    val elems = target.listIterator.asScala
+    elems.collectFirst(Function.unlift(elem => AttributeRegexToOption(elem.attributes, nameRegex)))
+  }
 }
 
 object EmptyStringToOption {
