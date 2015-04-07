@@ -64,14 +64,20 @@ class MyThing extends ScoupImplicits {
 If you have `ScoupImplicits` in scope, you get the following methods added to `Element`:
   - `attribute(name: String): Option[String]` - Returns a `None` if there's no such attribute or it is blank
   - `attributeRegex(nameRegex: Regex): Option[String]` - Use a Scala `Regex` to select an attribute by name
-	- `isBefore(other: Element): Boolean` - compare the position of this `Element` with another in the Document 
-	- `isAfter(other: Element): Boolean` - compare the position of this `Element` with another in the Document 
+  - `isBefore(other: Element): Boolean` - compare the position of this `Element` with another in the Document 
+  - `isAfter(other: Element): Boolean` - compare the position of this `Element` with another in the Document 
   - `closest(selector: String): Elements` - like the jQuery method of the same name, find the match in the Element's hierarchy closest to myself
   - `closestOption(selector: String): Option[Element]` - find the closest match in the Element's hierarchy, or `None` if none found
   - `closestBeforeOption(selector: String): Option[Element]` - find the closest match in the Element's hierarchy that is before myself
   - `closestAfterOption(selector: String): Option[Element]` - find the closest match in the Element's hierarchy that is after myself
 
 
+### Extra methods on `Elements`
+If you have `ScoupImplicits` in scope, you get the following methods added to `Elements` (in addition to being able to treat it as a `Seq[Element]`):
+  - `attribute(name: String): Option[String]` - Returns a `None` if there's no such attribute or it is blank
+  - `attributeRegex(nameRegex: Regex): Option[String]` - Use a Scala `Regex` to select an attribute by name
+  - `closestOption(selector: String): Option[Element]` - find the closest match in the Element's hierarchy, or `None` if none found
+  - `closest(selector: String): Elements` - like the jQuery method of the same name, find the match in the `Elements`' hierarchy closest to itself
 
 ### Credits
 - The awesome [JSoup](http://jsoup.org/) project.
