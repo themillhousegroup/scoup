@@ -55,6 +55,7 @@ class MyThing extends ScoupImplicits {
   Scoup.parse("http://www.somesite.com").map { doc =>
     val allHeadings = doc.select(".main h3")
     val fooHeadings = allHeadings.filter(_.ownText.contains("foo")).map(_.ownText)
+    ...
   }
 }
 ```
@@ -62,6 +63,7 @@ class MyThing extends ScoupImplicits {
 
 ### Extra methods on an `Element`
 If you have `ScoupImplicits` in scope, you get the following methods added to `Element`:
+
   - `attribute(name: String): Option[String]` - Returns a `None` if there's no such attribute or it is blank
   - `attributeRegex(nameRegex: Regex): Option[String]` - Use a Scala `Regex` to select an attribute by name
   - `isBefore(other: Element): Boolean` - compare the position of this `Element` with another in the Document 
@@ -73,11 +75,12 @@ If you have `ScoupImplicits` in scope, you get the following methods added to `E
 
 
 ### Extra methods on `Elements`
-If you have `ScoupImplicits` in scope, you get the following methods added to `Elements` (in addition to being able to treat it as a `Seq[Element]`):
-  - `attribute(name: String): Option[String]` - Returns a `None` if there's no such attribute or it is blank
-  - `attributeRegex(nameRegex: Regex): Option[String]` - Use a Scala `Regex` to select an attribute by name
-  - `closestOption(selector: String): Option[Element]` - find the closest match in the Element's hierarchy, or `None` if none found
-  - `closest(selector: String): Elements` - like the jQuery method of the same name, find the match in the `Elements`' hierarchy closest to itself
+If you have `ScoupImplicits` in scope, you get these methods (see above for description) added to `Elements` in addition to being able to treat it as an `Iterable[Element]`:
+
+  - `attribute(name: String): Option[String]` 
+  - `attributeRegex(nameRegex: Regex): Option[String]`
+  - `closestOption(selector: String): Option[Element]`
+  - `closest(selector: String): Elements`
 
 ### Credits
 - The awesome [JSoup](http://jsoup.org/) project.
