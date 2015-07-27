@@ -3,6 +3,8 @@ scoup
 
 Scoup (pronounced _"scoop"_) wraps the [JSoup](http://jsoup.org/) HTML parsing library with implicits for more Scala-idiomatic element operations, as well as additional methods for querying the parsed data.
 
+[![Build Status](https://travis-ci.org/themillhousegroup/scoup.svg?branch=master)](https://travis-ci.org/themillhousegroup/scoup)
+
 
 ### Installation
 
