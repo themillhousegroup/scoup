@@ -8,6 +8,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import com.themillhousegroup.scoup.options.ScoupOptions
 import org.jsoup.Connection.{ Response, Method }
 import scala.collection.mutable
+import java.net.URL
+
 
 object Scoup extends Scoup(new RealJsoup(), ScoupOptions()) {}
 
@@ -41,6 +43,16 @@ class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = 
   def parse(url: String, options: ScoupOptions = scoupOptions): Future[Document] = {
     Future {
       basicJsoup(url, options)
+        .method(Method.GET)
+        .execute
+    }.map { resp =>
+      extractCookies(options, resp).parse
+    }
+  }
+
+  def parseURL(url: URL, options: ScoupOptions = scoupOptions): Future[Document] = {
+    Future {
+      basicJsoup(url.toString, options)
         .method(Method.GET)
         .execute
     }.map { resp =>
