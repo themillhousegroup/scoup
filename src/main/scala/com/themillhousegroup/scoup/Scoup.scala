@@ -10,7 +10,6 @@ import org.jsoup.Connection.{ Response, Method }
 import scala.collection.mutable
 import java.net.URL
 
-
 object Scoup extends Scoup(new RealJsoup(), ScoupOptions()) {}
 
 /**

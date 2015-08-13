@@ -3,9 +3,9 @@ name := "scoup"
 // If the CI supplies a "build.version" environment variable, inject it as the rev part of the version number:
 version := s"${sys.props.getOrElse("build.majorMinor", "0.1")}.${sys.props.getOrElse("build.version", "SNAPSHOT")}"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.7"
 
-crossScalaVersions := Seq("2.11.2", "2.10.4")
+crossScalaVersions := Seq("2.11.7", "2.10.4")
 
 organization := "com.themillhousegroup"
 
