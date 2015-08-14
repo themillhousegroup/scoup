@@ -8,11 +8,13 @@ import scala.concurrent.{ Await, Future }
 import org.jsoup.nodes.Document
 import com.themillhousegroup.scoup.options.{ ScoupOptions, Waits, UserAgents }
 import org.jsoup.Connection.Response
+import scala.collection.JavaConverters._
 
 class ScoupSpec extends Specification with Mockito {
 
   class MockScoupScope extends Scope {
     val mockResponse = mock[Response]
+    mockResponse.cookies returns Map("foo" -> "bar").asJava
     val mockConnection = mock[Connection]
     mockConnection.userAgent(anyString) returns mockConnection
     mockConnection.timeout(anyInt) returns mockConnection
@@ -24,7 +26,7 @@ class ScoupSpec extends Specification with Mockito {
     mockJsoup.connect(anyString) returns mockConnection
     val testScoup = new Scoup(mockJsoup)
 
-    def waitFor(f: => Future[Document]) = {
+    def waitFor[X](f: => Future[X]): X = {
       Await.result(f, Waits.FifteenSeconds.duration)
     }
   }
@@ -71,6 +73,57 @@ class ScoupSpec extends Specification with Mockito {
       waitFor(testScoup.parsePost("foo", Map[String, String]()))
 
       there was one(mockConnection).method(Connection.Method.POST)
+    }
+
+  }
+
+  "Scoup cookie support" should {
+
+    "Allow cookies to be retrieved in a Scala collection" in new MockScoupScope {
+      val tuple = waitFor(testScoup.parseWithCookies("foo"))
+
+      val theCookies = tuple._2
+      theCookies must not beEmpty
+
+      theCookies("foo") must beEqualTo("bar")
+    }
+
+    "Allow cookies to be submitted in any GET request" in new MockScoupScope {
+      val testMap = Map("x" -> "y")
+      val javaMap = testMap.asJava
+
+      waitFor(testScoup.parse("foo", ScoupOptions(), testMap))
+
+      there was one(mockConnection).method(Connection.Method.GET)
+
+      there was one(mockConnection).cookies(javaMap)
+    }
+
+    "Allow cookies to be submitted in any POST request" in new MockScoupScope {
+      val testMap = Map("x" -> "y")
+      val javaMap = testMap.asJava
+
+      waitFor(testScoup.parsePost("foo", Map(), ScoupOptions(), testMap))
+
+      there was one(mockConnection).method(Connection.Method.POST)
+
+      there was one(mockConnection).cookies(javaMap)
+    }
+
+    "Allow cookies to be submitted and retrieved in any POST request" in new MockScoupScope {
+      val testMap = Map("x" -> "y")
+      val javaMap = testMap.asJava
+
+      val tuple = waitFor(testScoup.parsePostWithCookies("foo", Map(), ScoupOptions(), testMap))
+
+      there was one(mockConnection).method(Connection.Method.POST)
+
+      there was one(mockConnection).cookies(javaMap)
+
+      val theCookies = tuple._2
+      theCookies must not beEmpty
+
+      theCookies("foo") must beEqualTo("bar")
     }
 
   }

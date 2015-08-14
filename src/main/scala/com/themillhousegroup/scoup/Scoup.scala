@@ -18,45 +18,41 @@ object Scoup extends Scoup(new RealJsoup(), ScoupOptions()) {}
  */
 class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = ScoupOptions()) {
 
-  // TODO: remove this mutability...
-  val retainedCookies = mutable.Map[String, String]()
-
-  private def extractCookies(opts: ScoupOptions, response: Response) = {
-    if (opts.retainAllCookies) {
-      response.cookies.asScala.map {
-        case (k, v) =>
-          retainedCookies.put(k, v)
-      }
-    }
-    response
-  }
-
-  private def basicJsoup(url: String, options: ScoupOptions): Connection = {
+  private def basicJsoup(url: String, options: ScoupOptions, withCookies: Map[String, String], method: Method, data: Map[String, String]): Connection = {
     impl
       .connect(url)
       .userAgent(options.userAgent)
       .timeout(options.timeout.toMillis.toInt)
-      .cookies(retainedCookies.asJava)
+      .cookies(withCookies.asJava)
+      .data(data.asJava)
+      .method(method)
   }
 
-  def parse(url: String, options: ScoupOptions = scoupOptions): Future[Document] = {
-    Future {
-      basicJsoup(url, options)
-        .method(Method.GET)
-        .execute
-    }.map { resp =>
-      extractCookies(options, resp).parse
+  private def executeAsync(url: String, options: ScoupOptions, withCookies: Map[String, String], method: Method = Method.GET, data: Map[String, String] = Map()): Future[Response] = {
+    Future(basicJsoup(url, options, withCookies, method, data).execute)
+  }
+
+  /** Perform a GET on the URL, parsing the resulting Document */
+  def parse(url: String, options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[Document] = {
+    executeAsync(url, options, withCookies).map(_.parse)
+  }
+
+  /** Perform a GET on the URL, parsing the resulting Document and any cookies into the returned tuple */
+  def parseWithCookies(url: String, options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[(Document, Map[String, String])] = {
+    executeAsync(url, options, withCookies).map { resp =>
+      (resp.parse, resp.cookies.asScala.toMap)
     }
   }
 
-  def parsePost(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions): Future[Document] = {
-    Future {
-      basicJsoup(url, options)
-        .data(data.asJava)
-        .method(Method.POST)
-        .execute
-    }.map { resp =>
-      extractCookies(options, resp).parse
+  /** Perform a POST on the URL, parsing the resulting Document */
+  def parsePost(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[Document] = {
+    executeAsync(url, options, withCookies, Method.POST, data).map(_.parse)
+  }
+
+  /** Perform a POST on the URL, parsing the resulting Document and any cookies into the returned tuple */
+  def parsePostWithCookies(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[(Document, Map[String, String])] = {
+    executeAsync(url, options, withCookies, Method.POST, data).map { resp =>
+      (resp.parse, resp.cookies.asScala.toMap)
     }
   }
 
