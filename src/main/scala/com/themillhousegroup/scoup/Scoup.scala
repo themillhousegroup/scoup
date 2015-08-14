@@ -49,16 +49,6 @@ class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = 
     }
   }
 
-  def parseURL(url: URL, options: ScoupOptions = scoupOptions): Future[Document] = {
-    Future {
-      basicJsoup(url.toString, options)
-        .method(Method.GET)
-        .execute
-    }.map { resp =>
-      extractCookies(options, resp).parse
-    }
-  }
-
   def parsePost(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions): Future[Document] = {
     Future {
       basicJsoup(url, options)
