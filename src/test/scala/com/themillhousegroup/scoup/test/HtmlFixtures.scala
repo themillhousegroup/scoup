@@ -14,7 +14,7 @@ trait HtmlFixtures {
       <h3 id="secondHeading">Second Heading</h3>
       <ul id="secondList">
         <li id="l2i1">One</li>
-        <li id="l2i2">Two</li>
+        <li id="l2i2" uniqueAttribute="true">Two</li>
         <li id="l2i3">Three</li>
       </ul>
       <h3 id="thirdHeading">Third Heading</h3>
@@ -32,4 +32,17 @@ trait HtmlFixtures {
         <h2 id="middle" class=""/>
         <h2 id="bottom"/>
       """.stripMargin
+
+  val fullHtml =
+    """
+			<html>
+      	<head>
+					<script type="text/javascript">var desc="Style attribute should appear in dataNode queries";</script>
+				</head>
+				<body>
+					<h1>Header</h1>
+					<p>Some Text</p>
+				</body>
+			</html>	
+		"""
 }
