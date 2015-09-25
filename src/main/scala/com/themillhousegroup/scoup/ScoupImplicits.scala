@@ -35,7 +35,7 @@ class RichElement(val target: Element)
     with AttributeOption {
 }
 
-class RichNodeList[N <: Node](val target: java.util.List[N]) {
+class RichNodeList[N <: Node](val target: java.util.List[N]) extends Iterable[Node] {
 
   def iterator: Iterator[Node] = {
     target.asScala.iterator
