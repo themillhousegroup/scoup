@@ -21,7 +21,7 @@ Bring in the library by adding the following to your ```build.sbt```.
 
 ```
    libraryDependencies ++= Seq(
-     "com.themillhousegroup" %% "scoup" % "0.2.26"
+     "com.themillhousegroup" %% "scoup" % "0.2.293"
    )
 
 ```
@@ -45,6 +45,8 @@ Scoup.parse("http://www.google.com").map { doc =>
 
 #### Working with Elements as a Scala collection
 Mix in the `ScoupImplicits` trait to get automatic conversion from the Jsoup `Elements` class to a Scala `Iterable[Element]`. 
+
+You can just `import com.themillhousegroup.scoup.ScoupImplicits._` if you prefer.
 
 From there, you can `map`, `filter` etc as you see fit. For example, here we scrape __www.somesite.com__, first pulling out all the `<h3>` elements (into an `Iterable[Element]`) before filtering out only those Elements whose `text` contains the word "foo", mapping it to an `Iterable[String]`:
 
