@@ -5,12 +5,17 @@ import org.jsoup.nodes._
 import scala.collection.JavaConverters._
 import com.themillhousegroup.scoup.traits._
 
+/** Mix in to get enriched Element / Elements */
 trait ScoupImplicits {
   implicit def enrichElements(xs: Elements) = new RichElements(xs)
   implicit def enrichElement(el: Element) = new RichElement(el)
 
   implicit def enrichNodeList[N <: Node](l: java.util.List[N]) = new RichNodeList(l)
 }
+
+/** Import ScoupImplicits._ into scope to get enriched Element / Elements */
+object ScoupImplicits extends ScoupImplicits
+
 
 /**
  * TODO: Additional methods over and above those offered by JSoup, inspired by JQuery.
