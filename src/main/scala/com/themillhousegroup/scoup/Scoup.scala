@@ -56,6 +56,16 @@ class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = 
     }
   }
 
+  /** Perform a GET on the URL, and return the response body. I.E. you are just using Scoup/JSoup as a HTTP client :-) */
+  def get(url: String, options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[String] = {
+    executeAsync(url, options, withCookies).map(_.body)
+  }
+
+  /** Perform a POST on the URL, and return the response body. I.E. you are just using Scoup/JSoup as a HTTP client :-) */
+  def post(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[String] = {
+    executeAsync(url, options, withCookies, Method.POST, data).map(_.body)
+  }
+
   def parseHTML(html: String): Document = {
     impl.parse(html)
   }
