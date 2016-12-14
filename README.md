@@ -21,7 +21,7 @@ Bring in the library by adding the following to your ```build.sbt```.
 
 ```
    libraryDependencies ++= Seq(
-     "com.themillhousegroup" %% "scoup" % "0.2.293"
+     "com.themillhousegroup" %% "scoup" % "0.2.295"
    )
 
 ```
