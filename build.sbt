@@ -20,13 +20,13 @@ resolvers ++= Seq(  "oss-snapshots" at "https://oss.sonatype.org/content/reposit
                     "oss-releases"  at "https://oss.sonatype.org/content/repositories/releases",
                     "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/")
 
-jacoco.settings
+//jacoco.settings
 
-seq(bintraySettings:_*)
+// seq(bintraySettings:_*)
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
-scalariformSettings
+//scalariformSettings
 
-net.virtualvoid.sbt.graph.Plugin.graphSettings
+// net.virtualvoid.sbt.graph.Plugin.graphSettings
 
