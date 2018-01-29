@@ -24,6 +24,9 @@ class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = 
       .userAgent(options.userAgent)
       .timeout(options.timeout.toMillis.toInt)
       .cookies(withCookies.asJava)
+      .ignoreContentType(options.ignoreContentType)
+      .followRedirects(options.followRedirects)
+      .ignoreHttpErrors(options.ignoreHttpErrors)
       .data(data.asJava)
       .method(method)
   }
@@ -58,12 +61,14 @@ class Scoup(impl: JSoupProvider = new RealJsoup(), scoupOptions: ScoupOptions = 
 
   /** Perform a GET on the URL, and return the response body. I.E. you are just using Scoup/JSoup as a HTTP client :-) */
   def get(url: String, options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[String] = {
-    executeAsync(url, options, withCookies).map(_.body)
+    val acceptNonHtmlOptions = options.copy(ignoreContentType = true)
+    executeAsync(url, acceptNonHtmlOptions, withCookies).map(_.body)
   }
 
   /** Perform a POST on the URL, and return the response body. I.E. you are just using Scoup/JSoup as a HTTP client :-) */
   def post(url: String, data: Map[String, String], options: ScoupOptions = scoupOptions, withCookies: Map[String, String] = Map()): Future[String] = {
-    executeAsync(url, options, withCookies, Method.POST, data).map(_.body)
+    val acceptNonHtmlOptions = options.copy(ignoreContentType = true)
+    executeAsync(url, acceptNonHtmlOptions, withCookies, Method.POST, data).map(_.body)
   }
 
   def parseHTML(html: String): Document = {
