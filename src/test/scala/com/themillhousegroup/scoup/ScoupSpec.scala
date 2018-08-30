@@ -1,5 +1,6 @@
 package com.themillhousegroup.scoup
 
+import org.mockito.Mockito._
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.jsoup.Connection
@@ -10,9 +11,10 @@ import com.themillhousegroup.scoup.options.{ ScoupOptions, Waits, UserAgents }
 import org.jsoup.Connection.Response
 import scala.collection.JavaConverters._
 
-class ScoupSpec extends Specification with Mockito {
+class ScoupSpec extends Specification {
 
-  class MockScoupScope extends Scope {
+  class MockScoupScope extends Scope with Mockito with org.specs2.matcher.MustThrownExpectations {
+
     val mockResponse = mock[Response]
     mockResponse.cookies returns Map("foo" -> "bar").asJava
     val mockConnection = mock[Connection]
