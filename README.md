@@ -3,12 +3,9 @@ scoup
 
 Scoup (pronounced _"scoop"_) wraps the [JSoup](http://jsoup.org/) HTML parsing library with implicits for more Scala-idiomatic element operations, as well as additional methods for querying the parsed data.
 
-[![Build Status](https://travis-ci.org/themillhousegroup/scoup.svg?branch=master)](https://travis-ci.org/themillhousegroup/scoup)
-
-
 ### Installation
 
-Bring in the library by adding the following to your ```build.sbt```. 
+Scoup is published in Scala 2.11 and 2.12 versions. Bring in the library by adding the following to your ```build.sbt```. 
 
   - The release repository: 
 
@@ -21,7 +18,7 @@ Bring in the library by adding the following to your ```build.sbt```.
 
 ```
    libraryDependencies ++= Seq(
-     "com.themillhousegroup" %% "scoup" % "0.2.295"
+     "com.themillhousegroup" %% "scoup" % "0.4.6"
    )
 
 ```
