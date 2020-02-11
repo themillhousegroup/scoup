@@ -14,11 +14,11 @@ Scoup is published in Scala 2.11 and 2.12 versions. Bring in the library by addi
      "Millhouse Bintray"  at "http://dl.bintray.com/themillhousegroup/maven"
    )
 ```
-  - The dependency itself: 
+  - The dependency itself (available for Scala 2.11, 2.12 and 2.13): 
 
 ```
    libraryDependencies ++= Seq(
-     "com.themillhousegroup" %% "scoup" % "0.4.6"
+     "com.themillhousegroup" %% "scoup" % "0.4.7"
    )
 
 ```
