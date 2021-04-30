@@ -5,16 +5,7 @@ Scoup (pronounced _"scoop"_) wraps the [JSoup](http://jsoup.org/) HTML parsing l
 
 ### Installation
 
-Scoup is published in Scala 2.11 and 2.12 versions. Bring in the library by adding the following to your ```build.sbt```. 
-
-  - The release repository: 
-
-```
-   resolvers ++= Seq(
-     "Millhouse Bintray"  at "http://dl.bintray.com/themillhousegroup/maven"
-   )
-```
-  - The dependency itself (available for Scala 2.11, 2.12 and 2.13): 
+Scoup is published in Scala 2.11, 2.12 and 2.13 versions. Bring in the library by adding the following to your ```build.sbt```. 
 
 ```
    libraryDependencies ++= Seq(
