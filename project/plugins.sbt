@@ -15,4 +15,4 @@
 
 //addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.2")
 
-addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.1")
+addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.5.7")
