@@ -9,7 +9,7 @@ Scoup is published in Scala 2.11, 2.12 and 2.13 versions. Bring in the library b
 
 ```
    libraryDependencies ++= Seq(
-     "com.themillhousegroup" %% "scoup" % "0.4.7"
+     "com.themillhousegroup" %% "scoup" % "0.5.0"
    )
 
 ```
