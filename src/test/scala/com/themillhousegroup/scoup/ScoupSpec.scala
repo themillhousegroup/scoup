@@ -1,5 +1,6 @@
 package com.themillhousegroup.scoup
 
+import scala.language.postfixOps
 import org.mockito.Mockito._
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito

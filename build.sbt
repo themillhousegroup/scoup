@@ -2,16 +2,16 @@ name := "scoup"
 
 organization := "com.themillhousegroup"
 
-scalaVersion := "2.12.8"
+scalaVersion := "3.0.0"
 
-crossScalaVersions := Seq("2.13.1", "2.12.8", "2.11.11")
+crossScalaVersions := Seq("3.0.0", "2.13.6", "2.12.8", "2.11.11")
 
 libraryDependencies ++= Seq(
   "ch.qos.logback"    %   "logback-classic"       % "1.1.3",
   "org.jsoup"         %   "jsoup"                 % "1.8.3",
   "org.mockito"       %   "mockito-core"          % "2.21.0" % Test,
-  "org.specs2"        %%  "specs2-core"           % "4.8.3"  % Test,
-  "org.specs2"        %%  "specs2-mock"           % "4.8.3"  % Test
+  ("org.specs2"        %%  "specs2-core"           % "4.8.3"  % Test).cross(CrossVersion.for3Use2_13),
+  ("org.specs2"        %%  "specs2-mock"           % "4.8.3"  % Test).cross(CrossVersion.for3Use2_13)
 )
 
 //jacoco.settings

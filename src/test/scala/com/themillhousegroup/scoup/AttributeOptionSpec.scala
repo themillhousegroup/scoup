@@ -1,5 +1,6 @@
 package com.themillhousegroup.scoup
 
+import scala.language.postfixOps
 import org.specs2.mutable.Specification
 import com.themillhousegroup.scoup.test.HtmlFixtures
 import org.jsoup.nodes.Element
